@@ -31,7 +31,7 @@ def equilibrate(
     time_per_temp_increment: unit.Quantity = 0.005*unit.nanoseconds,
     time_final_stage: unit.Quantity = 0.05*unit.nanoseconds,
     minimize: bool = True,
-    platform: str = "CPU"
+    platform="CPU"
 ):
     print("Initialising equilibration run...")
     # adjust the range to include the highest temp (stop value)
@@ -113,8 +113,8 @@ def production(
     friction_coeff: unit.Quantity = 1/unit.femtosecond,
     step_size: unit.Quantity = 4*unit.femtoseconds,
     duration: unit.Quantity = 1*unit.nanoseconds,
-    steps_per_saved_frame: int = 100
-    platform: str = "CPU",
+    steps_per_saved_frame: int = 100,
+    platform="CPU"
 ):
     print("Initialising production run...")
 
