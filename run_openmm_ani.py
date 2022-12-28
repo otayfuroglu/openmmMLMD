@@ -7,7 +7,8 @@ from openmm_funcs import (equilibrate,
 
 
 # set device
-device = "CUDA"
+#  device = "CUDA"
+device = "OpenCl"
 
 # Load from gromac files
 #  gro = app.GromacsGroFile("mol.gro")
