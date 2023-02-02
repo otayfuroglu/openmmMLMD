@@ -1,7 +1,4 @@
 #
-import os
-import pandas as pd
-import csv
 from openmm import app
 from openmm import unit
 from openmmml import MLPotential
@@ -10,28 +7,17 @@ from openmm_funcs import (equilibrate,
 
 
 # set device
-<<<<<<< HEAD
-device = "CPU"
-#  device = "CUDA"
+#  device = "CPU"
+device = "CUDA"
 #  device = "OpenCL"
-=======
-#  device = "CUDA"
-device = "OpenCl"
->>>>>>> 70d9c7386982845255101dfc2fc9a5a5012687c0
 
 # Load from gromac files
 #  gro = app.GromacsGroFile("mol.gro")
 #  forcefield = app.GromacsTopFile("mol.top",
 #                                  periodicBoxVectors=gro.getPeriodicBoxVectors())
-#file1 = open("./list.txt", 'r')
-#file2 = file1.readlines()
-#for mole in file2:
-#    print(mole)
-#    mole=mole.replace("\n","")
-#    print(mole)
 
-    # Load from pdb
-pdb_path = "/truba_scratch/otayfuroglu/openmmMLMD/test/mudu_works/test_1mole/mobley_5631798.pdb"
+# Load from pdb
+pdb_path = "solv.pdb"
 pdb = app.PDBFile(pdb_path)
 temp = 300
 step_size = 2 * unit.femtoseconds
