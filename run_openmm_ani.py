@@ -7,8 +7,8 @@ from openmm_funcs import (equilibrate,
 
 
 # set device
-#  device = "CPU"
-device = "CUDA"
+device = "CPU"
+#  device = "CUDA"
 #  device = "OpenCL"
 
 # Load from gromac files
@@ -17,7 +17,8 @@ device = "CUDA"
 #                                  periodicBoxVectors=gro.getPeriodicBoxVectors())
 
 # Load from pdb
-pdb_path = "solv.pdb"
+#  pdb_path = "solv.pdb"
+pdb_path = "/truba_scratch/otayfuroglu/openmmMLMD/test/mudu_works/test_1mole/mobley_5631798.pdb"
 pdb = app.PDBFile(pdb_path)
 temp = 300
 step_size = 2 * unit.femtoseconds
