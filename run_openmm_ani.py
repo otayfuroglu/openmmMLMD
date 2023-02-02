@@ -10,9 +10,14 @@ from openmm_funcs import (equilibrate,
 
 
 # set device
+<<<<<<< HEAD
 device = "CPU"
 #  device = "CUDA"
 #  device = "OpenCL"
+=======
+#  device = "CUDA"
+device = "OpenCl"
+>>>>>>> 70d9c7386982845255101dfc2fc9a5a5012687c0
 
 # Load from gromac files
 #  gro = app.GromacsGroFile("mol.gro")
