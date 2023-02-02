@@ -38,7 +38,7 @@ modeller = app.Modeller(pdb.topology, pdb.positions)
 simulation = equilibrate(
     modeller,
     forcefield,
-    temp_range=range(100, temp+1, 100),
+    temp_range=range(100, temp, 100), # initial temp, ultimate temp, temp step size for increasing
     time_per_temp_increment=0.001*unit.nanoseconds,
     time_final_stage=0.01*unit.nanoseconds,
     step_size=step_size,
