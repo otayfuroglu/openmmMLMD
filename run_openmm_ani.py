@@ -18,11 +18,13 @@ device = "CPU"
 
 # Load from pdb
 #  pdb_path = "solv.pdb"
-pdb_path = "/truba_scratch/otayfuroglu/openmmMLMD/test/mudu_works/test_1mole/mobley_5631798.pdb"
+pdb_path = "/truba_scratch/otayfuroglu/openmmMLMD/test/akocak_test/test.pdb"
 pdb = app.PDBFile(pdb_path)
+box_vectors = pdb.topology.getPeriodicBoxVectors()
+
 temp = 300
 step_size = 2 * unit.femtoseconds
-total_time = 1*unit.nanoseconds
+total_time = 0.5*unit.nanoseconds
 
 # set ani potential as a forcefield
 forcefield = MLPotential('ani2x')
@@ -38,14 +40,14 @@ modeller = app.Modeller(pdb.topology, pdb.positions)
 simulation = equilibrate(
     modeller,
     forcefield,
-    temp_range=range(100, temp, 100), # initial temp, ultimate temp, temp step size for increasing
+    box_vectors,
+    temp_range=range(300, temp, 100), # initial temp, ultimate temp, temp step size for increasing
     time_per_temp_increment=0.001*unit.nanoseconds,
     time_final_stage=0.01*unit.nanoseconds,
     step_size=step_size,
-    minimize=False,
+    minimize=True,
     platform=device,
 )
-
 
 # Production
 simulation.positions = simulation.context\
@@ -53,6 +55,7 @@ simulation.positions = simulation.context\
 production(
     simulation,
     forcefield,
+    box_vectors,
     temperature=temp*unit.kelvin,
     step_size=step_size,
     duration=total_time,
