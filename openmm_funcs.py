@@ -8,7 +8,7 @@ from openmm import unit
 
 # Minimization function
 
-def minimize(simulation, iters=500):
+def minimize_f(simulation, iters=500):
     simulation.minimizeEnergy(tolerance=0.001, maxIterations=iters)
     position = simulation.context.getState(getPositions=True).getPositions()
     outFile = "minimized_struct.pdb"
@@ -22,6 +22,7 @@ def minimize(simulation, iters=500):
 def equilibrate(
     coords: app.Topology,
     forcefield: app.ForceField,
+    box_vectors: unit.quantity.Quantity,
     final_pressure: unit.Quantity = 1*unit.atmosphere,
     temp_range: range = range(0, 300, 25),
     output_state_data_filename="equilibration_state_data.csv",
@@ -67,19 +68,27 @@ def equilibrate(
         openmm.Platform.getPlatformByName(platform)
     )
     simulation.context.setPositions(coords.positions)
-    simulation.reporters.append(app.PDBReporter(output_pdb_filename, 100))
+
+    # seet PBC for simulataion if there is
+    if box_vectors is not None:
+        simulation.context.setPeriodicBoxVectors(*box_vectors)
+
+    simulation.reporters.append(app.PDBReporter(output_pdb_filename, 20))
     state_reporter = app.StateDataReporter(
         output_state_data_filename,
         steps_per_temp_increment//10,
         temperature=True,
+        density=True,
         potentialEnergy=True,
+        kineticEnergy=True,
+        totalEnergy=True,
     )
     simulation.reporters.append(state_reporter)
 
     # Local energy minimisation
     if minimize:
         print("Local energy minimisation...")
-        simulation = minimize(simulation, 500)
+        simulation = minimize_f(simulation, 500)
 
     # Heating to final temp
     print(f"Equilibrating {temperatures.min()}\
@@ -106,6 +115,7 @@ def equilibrate(
 def production(
     coords: app.Topology,
     forcefield: app.ForceField,
+    box_vectors: unit.quantity.Quantity,
     output_state_data_filename="production_state_data.csv",
     output_pdb_filename="traj_production.pdb",
     temperature: unit.Quantity = 300*unit.kelvin,
@@ -141,12 +151,19 @@ def production(
         openmm.Platform.getPlatformByName(platform)
     )
     simulation.context.setPositions(coords.positions)
+
+    # seet PBC for simulataion if there is
+    if box_vectors is not None:
+        simulation.context.setPeriodicBoxVectors(*box_vectors)
+
     state_reporter = app.StateDataReporter(
         output_state_data_filename,
         steps_per_saved_frame,
         temperature=True,
+        density=True,
         potentialEnergy=True,
-        speed=True
+        kineticEnergy=True,
+        totalEnergy=True,
     )
     simulation.reporters.append(state_reporter)
     simulation.reporters.append(app.PDBReporter(output_pdb_filename,
