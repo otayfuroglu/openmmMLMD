@@ -4,6 +4,14 @@ from openmm import unit
 from openmmml import MLPotential
 from openmm_funcs import (equilibrate,
                           production)
+import argparse
+
+
+parser = argparse.ArgumentParser(description="Give something ...")
+parser.add_argument("-pdb_path", type=str)
+
+
+args = parser.parse_args()
 
 
 # set device
@@ -18,7 +26,8 @@ device = "CPU"
 
 # Load from pdb
 #  pdb_path = "solv.pdb"
-pdb_path = "/truba_scratch/otayfuroglu/openmmMLMD/test/akocak_test/test.pdb"
+#  pdb_path = "/truba_scratch/otayfuroglu/openmmMLMD/test/akocak_test/test.pdb"
+pdb_path = args.pdb_path
 pdb = app.PDBFile(pdb_path)
 box_vectors = pdb.topology.getPeriodicBoxVectors()
 
