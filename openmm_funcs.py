@@ -73,7 +73,7 @@ def equilibrate(
     if box_vectors is not None:
         simulation.context.setPeriodicBoxVectors(*box_vectors)
 
-    simulation.reporters.append(app.PDBReporter(output_pdb_filename, 20))
+    simulation.reporters.append(app.PDBReporter(output_pdb_filename, 500))
     state_reporter = app.StateDataReporter(
         output_state_data_filename,
         steps_per_temp_increment//10,
@@ -123,7 +123,7 @@ def production(
     friction_coeff: unit.Quantity = 1/unit.femtosecond,
     step_size: unit.Quantity = 4*unit.femtoseconds,
     duration: unit.Quantity = 1*unit.nanoseconds,
-    steps_per_saved_frame: int = 100,
+    steps_per_saved_frame: int = 500,
     platform="CPU"
 ):
     print("Initialising production run...")
